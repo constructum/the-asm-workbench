@@ -1,0 +1,17 @@
+Group is
+	$/basis.cm
+	$/smlnj-lib.cm
+	../../lib/SML/lib.cm
+	../Kernel/asm.cm
+	lift.sml
+	il.sml
+	il-pretty.sml
+	asm0.sml
+	smv-id.sml
+	smv-ast.sml
+	smv-pretty.sml
+	asm2smv.sml
+	smv-codegen.sml
+	errors.sml
+	main.sml
+	export.sml

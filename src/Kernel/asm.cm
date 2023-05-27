@@ -1,0 +1,55 @@
+Library
+        structure ASM_Location
+        structure ASM_Position
+        structure ASM_Type
+        structure ASM_AST
+        structure ASM_Lexer
+        structure ASM_Parser
+	
+	signature TERM_ALGEBRA
+	functor TermInduction
+	signature RULE_ALGEBRA
+	functor RuleInduction
+	signature PATT_ALGEBRA
+	functor PattInduction
+
+	structure ASM_Value
+        structure ASM_Dictionary
+        structure ASM_Signature
+        structure ASM_Global
+        structure ASM_Oracle
+        structure ASM_Eval
+        structure ASM_Check
+	structure ASM_Pretty
+	
+	structure ASM_Collect
+	structure ASM_Expand
+
+	structure ASM_Env
+        structure ASM_Run
+        structure ASM_Top
+        structure ASM
+is
+        ../../lib/SML/lib.cm
+        $/basis.cm
+        $/smlnj-lib.cm
+        asm-misc.sml
+        asm-name.sml
+        asm-type.sml
+        asm-ast.sml
+        asm-induction.sml
+        asm-lexer.sml
+        asm-parser-comb.sml
+        asm-parser.sml
+        asm-pretty.sml
+        asm-signature.sml
+        asm-check.sml
+        asm-value.sml
+        asm-dictionary.sml
+	asm-symbolic.sml
+        asm-run.sml
+        asm-oracle.sml
+        asm-eval.sml
+        asm-top.sml
+        asm-global.sml
+        asm.sml

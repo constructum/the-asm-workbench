@@ -1,0 +1,20 @@
+#!/bin/sh
+# global substitute (not recursive)
+# Usage: globalsubst  <substituend> <substitutive> <files...>
+# $Id: globalsubst,v 3.0 2001/03/30 13:37:59 2cxl Exp $ 
+# set -x
+EX1=$1; shift
+EX2=$1; shift
+TMPFILE=/tmp/`basename $0`.$$
+if [ -z "$EX1" -o -z "$EX2" -o -z "$*" ]; then 
+  echo Usage `basename $0`': expr1 expr2 files...'; exit -1
+  fi
+for file in `grep 2>/dev/null -l $EX1 $*`; do
+  sed s/${EX1}/${EX2}/g $file >$TMPFILE
+  if [ -s $TMPFILE ]; then mv $TMPFILE $file
+  else echo Substitute failed for $file.
+  fi
+done
+# Uncomment this for recursive version:-
+# for file in $*; do if [ -d $file ]; then $0 $EX1 $EX2 $file/*; fi done
+

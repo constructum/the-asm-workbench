@@ -1,0 +1,59 @@
+(* -*-Mode: sml-*- *)
+
+Library
+  structure SysDep
+	    
+  structure BasicUtil
+  structure BasicTypes
+
+  structure TkTypes
+  structure SmlTk 
+  structure SmlTk21
+		
+  structure GlobalConfig
+
+is
+
+		sys_conf.sml
+debug.sig	debug.sml
+sys_dep.sig	njml.sml
+basic_util.sig	basic_util.sml
+#if defined (TK_INSIDE) 
+tk_access.sig   tk_access.sml 
+#endif
+fonts.sig       fonts.sml
+		basic_types.sml
+gui_state.sig   gui_state.sml
+com_state.sig   
+#if defined (TK_INSIDE)
+                com_state_clib.sml
+#else  
+                com_state_pipe.sml
+#endif
+com.sig		com.sml
+paths.sig	paths.sml
+config.sig	config.sml
+tk_event.sig	tk_event.sml
+bind.sig 	bind.sml
+coord.sig	coord.sml
+mark.sig	mark.sml
+c_item.sig	c_item.sml
+ann_texts.sig	ann_texts.sml
+annotation.sig	annotation.sml
+widget_tree.sig	widget_tree.sml
+c_item_tree.sig	c_item_tree.sml
+annotation_tree.sig	annotation_tree.sml
+windows.sig	windows.sml
+eventloop.sig	eventloop.sml
+widget_ops.sig	widget_ops.sml
+
+sys_init.sml
+tk_types.sml
+export.sml
+smltk21.sml
+global_config.sml
+
+$/basis.cm
+$/smlnj-lib.cm
+$smlnj/compiler.cm
+

@@ -1,0 +1,51 @@
+Library
+        (* writer.sml *)
+	structure Write
+	structure Output
+
+	(* reader *)
+        structure Read
+	structure StringInputStream
+	structure FileInputStream
+	structure Input
+
+        structure Misc
+        structure File
+        structure Error
+        structure Pretty
+        structure Lexer
+        
+        (* tuples.sml *)
+        structure Single
+        structure Pair
+        structure Triple
+        structure Tuple4
+        structure Tuple5
+
+        (* std-types.sml *)
+        structure Option_
+        structure List_
+        structure Int_
+        structure Bool_
+        structure Real_
+        structure String_
+
+        (* trace.sml *)
+        structure Trace
+        
+        (* graph.sml *)
+        functor Graph
+is
+        $/basis.cm
+        $/smlnj-lib.cm
+	writer.sml
+        reader.sml 
+        misc.sml
+        file.sml
+        error.sml
+        pretty.sml
+        lexer.sml
+        tuples.sml
+        std-types.sml
+        trace.sml
+        graph.sml

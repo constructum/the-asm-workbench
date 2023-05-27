@@ -1,0 +1,48 @@
+Group is
+	$/basis.cm
+	$/smlnj-lib.cm
+	
+        ../../sml_tk/src/smltk.cm
+        ../../sml_tk/src/toolkit/sources.cm 
+
+	../../lib/SML/lib.cm
+        ../Kernel/asm.cm
+
+	Generic/gui-misc.sml
+	Generic/asm-gui-fonts.sml
+	Generic/state-dep-widget.sml
+	Generic/make-state-dep-widget.sml
+	Generic/gui-state-elem.sml
+	Generic/window.sml
+	Generic/child-windows.sml
+	Generic/entry.sml
+	Generic/browser.sml
+	Generic/listbox.sml
+	Generic/filer.sml     (* adapted from old version of sml_tk *)
+	
+	State/asm-gui-state.sml
+	State/filelist.sml
+	State/term-observation.sml
+	State/run-options.sml
+	State/visual-options.sml
+	
+	Widgets/source-browser.sml
+	Widgets/filelist-frame.sml
+
+	Windows/error-box.sml
+        Windows/signature.sml
+        Windows/observation-window.sml
+        Windows/term-observation.sml
+        Windows/run-options.sml
+        Windows/visual-options.sml
+        Windows/visualization.sml
+	Windows/about-window.sml
+	Windows/license-window.sml
+
+	asm-interface.sml
+	asm-gui-session.sml
+	asm-gui-actions.sml
+        asm-gui-menus.sml
+        asm-gui.sml
+	asm-cl.sml
+	asm-wb.sml

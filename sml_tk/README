@@ -1,0 +1,43 @@
+Welcome to sml_tk ! 
+===================
+
+Thank you for your interest in our software. The installation
+procedures of sml_tk are detailed in Sect. 5 of the manual, which can
+be found in doc/manual.html.
+
+*************************************************************************
+*                                                                       *
+* Please read the file COPYRIGHT for the licensing terms of sml_tk.     *
+* Installing sml_tk on your system implies acceptance of those terms.   *
+*                                                                       *
+*************************************************************************
+
+Quick rundown of the directory structure:
+
+- Directory src contains all source files;
+- Directory doc contains the manual;
+- Directory lib contains files used at runtime (e.g. image files,
+  icons, etc.);
+
+Getting started: 
+
+- Set environment variable SMLTK_TCL to the full path of the wish;
+- Set environment variable SMLTK_LIB to the full path of directory lib;
+- chdir to src and start SML compiler;
+- case you SML-compiler of
+     SML/NJ   => CM.make "sources.cm";
+   | PolyML   => use "root_poly.sml";
+   | MoscowML => use "root_mosml.sml"; 
+- After successful compilation:
+  SmlTk.init();
+  WeeBoxes.go(); (* a wee example *)
+- In case of problems, or for more detail of installation procedures,
+  consult section 5 of the manual. 
+
+Please include both release and patchlevel in any error messages you
+send us. This is release 3.0, patchlevel 1. 
+
+Contact smltk@informatik.uni-bremen.de if you have any problems. 
+
+-- cxl & bu,  25.3.2001
+

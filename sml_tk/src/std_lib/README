@@ -1,0 +1,10 @@
+This directory contains a subset of the std-library 
+(njml-110/src/smlnj-lib/Util/*)
+based on Version njml 110.
+
+All structures taken from there should go here - 
+the main purpose is to make SmlTk-compilation
+selfcontained.
+
+- bu
+

@@ -1,0 +1,3 @@
+#!/bin/sh
+sml @SMLload=$ASM_WB_HOME/bin/asm-wb.x86-linux $*
+
