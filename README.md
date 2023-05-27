@@ -74,7 +74,7 @@ To get the ASM Workbench up and running, it is probably best to go through the f
       OS.FileSys.chDir (valOf (OS.Process.getEnv "ASM_WB_HOME") ^ "/src/GUI");
       CM.make "asm-gui.cm";
       ```
-      Then you can type `ASM_GUI.start()` in the the SML environment to start the GUI.
+      Then you can type `ASM_GUI.start();` in the the SML environment to start the GUI.
       
     c. Interface to SMV model checker (ASM2SMV):
       ```
