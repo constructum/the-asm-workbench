@@ -72,14 +72,6 @@ struct
   val empty :TRANSITION_SYSTEM = 
     LocMap.empty
 
-(*
-  fun loc_info ts loc = 
-    case LocMap.peek (ts, loc) of
-      SOME info => info
-    | NONE	=> { next    = SOME (ref (Term (CondTerm' []))),   (* NONE, *)
-		     cc      = TRUE }
-*)
-
   fun domain (ts :TRANSITION_SYSTEM) :LocSet.set =
     LocMap.foldli (fn (loc, _, dom) => LocSet.add (dom, loc)) LocSet.empty ts
 
@@ -127,22 +119,6 @@ struct
       SOME info => info
     | NONE	=> { next = location l, changed = FALSE, cc = TRUE }
 
-
-(*
-  fun join (ts1, ts2) (ts_cont :TRANSITION_SYSTEM) :TRANSITION_SYSTEM =
-    let val (app_ts1', app_ts2') = (apply (ts1 ts'), apply (ts2 ts'))
-	val app_ts12cont = apply ((ts1 o ts2) ts_cont)
-	fun one_location l = 
-	  let val { changed = changed1, cc = cc1, ... } = app_ts1' l
-	      val { changed = changed2, cc = cc2, ... } = app_ts2' l
-	  in { next    = #next (app_ts12cont l),
-	       changed = changed1 Or changed2,
-	       cc	     = cc1 And cc2 And (Not changed1 Or Not changed2) }
-	  end
-    in LocSet.fold (fn (l, ts) => LocMap.insert (ts, l, one_location l)) locations empty
-    end
-*)
-  
   fun ts_update_rule (ref (Loc l), ref (Val v)) (ts' :TRANSITION_SYSTEM) = single_update (l, v)
     | ts_update_rule _ ts = impossible "ts_rule: UpdateRule"
 
@@ -150,7 +126,6 @@ struct
 		   (ts' :TRANSITION_SYSTEM) =
     let val G_ts_list = map (fn (G_i, ts_i) => (G_i, (ts_i ts'))) G_ts_list
 	val locations = LocSet.UNION (map (fn (G, ts_i') => domain ts_i') G_ts_list)
-(* !!!!! giusp 3.4.2001 !!!! *)
         val additional_locations =   (* location which do not occur in any ts_i, but in some condition,
 				          and are not external locations *)
               LocSet.filter
@@ -161,15 +136,8 @@ struct
 	val appts' = apply ts'
 	fun one_location (l :LOCATION) :LOC_INFO' =
 	  { next =
-             let val Gts = (map (fn (G_i, ts_i) => (G_i, #next (apply ts_i l))) G_ts_list)
-             in case cond_term Gts of
-                  x as ref (Val v) => x
-                | _ => cond_term ( Gts @ [ (TRUE, #next (appts' l)) ] )
-             end,
-(*
-	     cond_term ( (map (fn (G_i, ts_i) => (G_i, #next (apply ts_i l))) G_ts_list)
-			 @ [ (TRUE, #next (appts' l)) ] ),
-*)
+              cond_term ( (map (fn (G_i, ts_i) => (G_i, #next (apply ts_i l))) G_ts_list)
+			  @ [ (TRUE, #next (appts' l)) ] ),
             changed =
 	      OR (map (fn (G_i, ts_i) => G_i And (#changed (apply ts_i l))) G_ts_list),
             cc =
@@ -186,21 +154,7 @@ struct
     end
 
   infix **
-  fun (dts1 ** dts2) ts =
-    let val _ = ()
-(*      val dom1 = domain (dts1 empty)   (* second argument irrelevant for the domain *) *)
-(*	val dts2_ts = dts2 ts *)
-(*	val dom2    = domain dts2_ts *)
-(*	val dom2 = domain (dts2 empty) *)
-(*	val diff = LocSet.difference (dom2, dom1) *)
-    in LocMap.override ( dts2 ts, dts1 (dts2 ts) )
-(*
-       LocMap.override (
-         dts1 (dts2 ts)
-	 LocSet.fold (fn (l, ts) => LocMap.insert (ts, l, apply dts2_ts l)) diff empty
-       )
-*)
-    end
+  fun (dts1 ** dts2) ts = LocMap.override ( dts2 ts, dts1 (dts2 ts) )
 
   fun ts_block_rule (ts_list :(TRANSITION_SYSTEM -> TRANSITION_SYSTEM) list)
 		    (ts' :TRANSITION_SYSTEM) =
@@ -219,36 +173,6 @@ struct
           end
     in (List.foldr block2 Misc.id ts_list) ts'
     end
-
-
-
-(*
-    structure ExpandRuleSpec = struct
-      open CommonExpandSpec
-
-      val h_term = ExpandTerm.term
-
-      fun h_rule h_rule' R plm env =
-	expand_locations_in_rule h_rule' plm R env
-
-      fun R R' = ref (Rule R')
-
-      fun UpdateRule ((f, t), t') plm env = R (ASM_AST.UpdateRule ((f, t plm env), t' plm env))
-
-      fun BlockRule Rs plm env = R (ASM_AST.BlockRule (map (fn R => R plm env) Rs))
-
-      fun LetRule (p, R1, R2) plm env = R (ASM_AST.LetRule (p, R1 plm env, R2 plm env))
-      fun CondRule GRs plm env        = R (ASM_AST.CondRule (map (fn (G,R) => (G plm env, R plm env)) GRs))
-      fun CaseRule (t,pRs) plm env    = R (ASM_AST.CaseRule (t plm env, map (fn (p,R) => (p, R plm env)) pRs))
-
-      fun ForallRule ((p,A,G),R') plm env = R (ASM_AST.ForallRule ((p, A plm env, G plm env), R' plm env))
-
-      fun ChooseRule _ _ _ = raise NotImplemented "ExpandRule: ChooseRule"
-      fun AppRule _ _ _    = raise NotImplemented "ExpandRule: AppRule"     (* should never occur  ! *)
-    end
-
-    structure  = RuleInduction (ExpandRuleSpec)
-*)
 
   structure TS'_Spec = struct
     structure S = struct
@@ -285,25 +209,9 @@ struct
   end
 
   structure TS = RuleInduction (TS'_Spec)
-
   val ts' = TS.rule
-(*
-  fun ts' (ref (Rule R')) :TRANSITION_SYSTEM -> TRANSITION_SYSTEM = 
-    ASM_Inductive.rule' (id, id, id) ts' {
-      UpdateRule = ts_update_rule,
-      BlockRule  = ts_block_rule,
-      CondRule   = ts_cond_rule,
-      ImportRule = fn _ => impossible "ts_rule: ImportRule",
-      ChooseRule = fn _ => impossible "ts_rule: ChooseRule",
-      VarRule    = fn _ => impossible "ts_rule: VarRule",
-      LetRule    = fn _ => impossible "ts_rule: LetRule",
-      CaseRule   = fn _ => impossible "ts_rule: CaseRule",
-      AppRule    = fn _ => impossible "ts_rule: AppRule"
-    } R'
-*)
 
   fun ts R = ts' R empty
-
 
 
   (* --- collect values (only values which can be assigned, e.g. not those in guards!) --- *)
@@ -331,6 +239,8 @@ struct
 
   (* --- build complete information about transition system --- *)
 
+  fun functionKind f = valOf (ASM_Signature.functionKind (ASM_Signature.find (!ASM_Top.sign) f))
+
   fun some (SOME x) = x
     | some _ = impossible "some"
 
@@ -339,14 +249,17 @@ struct
     (ASM_Top.initState () (Id s) x)
 
   fun transition_system (R :PE_RULE) :(LOCATION * LOC_INFO) list =
-    let fun F (loc :LOCATION, { next = next, changed = changed, cc = cc } :LOC_INFO') =
+    let fun F (loc as (s, _) :LOCATION, { next = next, changed = changed, cc = cc } :LOC_INFO') =
           let val init = loc_init loc
 	      val next = simplify_term next
 	  in { init = init,
 	       next = next,
 	       cc = (*ASM0.unfold_term*) cc,
-	       loc_range = ValSet.union (ValSet.fromList (ASM0.loc_range loc), range_of_rhs next)
-			   (*ValSet.union (ValSet.singleton init, range_of_rhs next)   (* optimization,unsafe? *)*) }
+	       loc_range = if (functionKind s = ASM_AST.External)
+                           then (* for external location: specified range according to finiteness constraints *)
+                                ValSet.fromList (ASM0.loc_range loc)
+                           else (* for dynamic location: only the values it can actually assume, i.e. initial value or any value occurring on rhs *)
+                                ValSet.union (ValSet.singleton init, range_of_rhs next) }
           end
         val trsys = ts R
     in map (fn (loc, info) => (loc :LOCATION, F (loc, info))) (LocMap.listItemsi trsys)
