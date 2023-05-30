@@ -102,7 +102,9 @@ To get the ASM Workbench up and running, it is probably best to go through the f
      ```
      $ASM_WB_HOME/bin/asm2smv
      ```
-     (use `--help` to see the available options)
+     (use `--help` to see the available options).
+
+     Note that ASM2SMV works well with [NuSMV](https://nusmv.fbk.eu/), a new implementation of SMV that is actively maintained.
 
 ---
 
