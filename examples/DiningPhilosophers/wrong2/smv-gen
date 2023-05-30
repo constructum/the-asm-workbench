@@ -1,0 +1,2 @@
+#!/bin/sh
+$ASM_WB_HOME/bin/asm2smv -files phil.asm -program Program -invariants phil.inv

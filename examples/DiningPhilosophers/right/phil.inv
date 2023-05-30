@@ -1,0 +1,3 @@
+not ( forall ph in Phil : phil_state(ph) = hungry )
+
+

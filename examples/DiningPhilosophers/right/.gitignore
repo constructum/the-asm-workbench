@@ -1,0 +1,2 @@
+# do not put automatically generated smv files under version control
+*.smv
