@@ -25,11 +25,11 @@ struct
     fun getFilelist () = map ! (!filelist)
 
     fun filelistToString () =
-	let fun pairToString (ref (s, NotLoaded)) = String_.replace "($1, NotLoaded)" [ s ]
-	      | pairToString (ref (s, Error _))   = String_.replace "($1, Error)" [ s ]
-	      | pairToString (ref (s, Loaded _))  = String_.replace "($1, Loaded)" [ s ]
-	in String_.replace "[ $1 ]" [ List_.output ", " (map pairToString (!filelist)) ]
-	end
+      let fun pairToString (ref (s, NotLoaded)) = String_.replace "($1, NotLoaded)" [ s ]
+            | pairToString (ref (s, Error _))   = String_.replace "($1, Error)" [ s ]
+            | pairToString (ref (s, Loaded _))  = String_.replace "($1, Loaded)" [ s ]
+      in String_.replace "[ $1 ]" [ List_.output ", " (map pairToString (!filelist)) ]
+      end
 
     fun resetFilelist newFilenames =
     ( debug "resetFilelist [ $1 ]" [ List_.output ", " newFilenames ];
@@ -40,6 +40,34 @@ struct
       GUI_StateElem.set_updated gse_filelist;
       selected_file_pos := ( if not (null (getFilenames ())) then 0 else ~1 );
       GUI_StateElem.set_updated gse_filelist_pos )
+
+    fun getSelectedFile () =
+      let val file =
+            if !selected_file_pos >= 0 andalso !selected_file_pos < length (getFilenames ())
+	          then List.nth (getFilenames (), !selected_file_pos)
+	          else ""
+      in  debug "getSelectedFile () = '$1'" [ file ];
+	        file
+      end
+	       
+    fun setSelectedPosition i =
+    ( debug "setSelectedPosition ($1)" [ Int.toString i ];
+      if i >= 0 andalso i < length (getFilenames ())
+      then selected_file_pos := i
+      else selected_file_pos := ~1;
+      GUI_StateElem.set_updated gse_filelist_pos )
+      
+    fun getSelectedPosition () =
+      let val pos = (!selected_file_pos)
+      in  debug "getSelectedPosition () = $1" [ Int.toString pos ];
+	        pos
+      end
+
+    fun selectFile filename =
+    ( debug "selectFile ($1)" [ filename ];
+      case List_.indexOf (filename, getFilenames ()) of
+	      NONE => ( setSelectedPosition (~1); false )
+	    | SOME i => ( setSelectedPosition i; true ) )
 
     fun reset () = resetFilelist []
 
@@ -53,8 +81,12 @@ struct
 	  fun iterate i [] = ()
 	    | iterate i ((cell as ref (file, state)) :: rest) =
 	        if load1 cell then iterate (i+1) rest else ()
-      in iterate 0 (!filelist);
-	 GUI_StateElem.set_updated gse_filelist; full_gui_update ()
+      in  iterate 0 (!filelist);
+          let val len = length (getFilelist ())
+          in if len > 0 then setSelectedPosition (len - 1) else ()
+          end;
+	        GUI_StateElem.set_updated gse_filelist;
+          full_gui_update ()
       end handle _ => ( GUI_StateElem.set_updated gse_filelist; full_gui_update () )
 
     fun loadNewFiles newFilenames =
@@ -98,34 +130,6 @@ struct
       debug0 "removeFile ()";
       removeFileAt (!selected_file_pos)	 )
 	
-    fun getSelectedFile () =
-      let val file =
-            if !selected_file_pos >= 0 andalso !selected_file_pos < length (getFilenames ())
-	    then List.nth (getFilenames (), !selected_file_pos)
-	    else ""
-      in debug "getSelectedFile () = '$1'" [ file ];
-	 file
-      end
-	       
-    fun setSelectedPosition i =
-    ( debug "setSelectedPosition ($1)" [ Int.toString i ];
-      if i >= 0 andalso i < length (getFilenames ())
-      then selected_file_pos := i
-      else selected_file_pos := ~1;
-      GUI_StateElem.set_updated gse_filelist_pos )
-      
-    fun getSelectedPosition () =
-      let val pos = (!selected_file_pos)
-      in debug "getSelectedPosition () = $1" [ Int.toString pos ];
-	 pos
-      end
-
-    fun selectFile filename =
-    ( debug "selectFile ($1)" [ filename ];
-      case List_.indexOf (filename, getFilenames ()) of
-	  NONE => ( setSelectedPosition (~1); false )
-	| SOME i => ( setSelectedPosition i; true ) )
-
     (* !!! only temporary for compatibility *)
     fun getSpecificationNames () =
       List.concat (map ((fn Loaded names => names | _ => []) o getFileState)

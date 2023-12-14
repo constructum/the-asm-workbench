@@ -1,6 +1,6 @@
 structure ASM_GUI_Session =
 struct
-  fun debug s L = GUI_Misc.debug true "ASM_GUI_State" s L
+  fun debug s L = GUI_Misc.debug false "ASM_GUI_State" s L
 
 
   (* ----------------------------------------------------------------- *)

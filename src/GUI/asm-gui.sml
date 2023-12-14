@@ -54,12 +54,15 @@ struct
   ( resetWorkbench ();
     ASM_GUI_Session.restore () )
 
-  fun register_widgets ()   = ( SourceBrowser.SDW.register ();
-                                FilelistFrame.SDW.register () )     
-  fun redraw_widgets ()     = ( SourceBrowser.SDW.redraw ();
-                                FilelistFrame.SDW.redraw () )
+  fun register_widgets () = ( SourceBrowser.SDW.register ();
+                              FilelistFrame.SDW.register ();
+                              ErrorBox.SDW.register () )     
+  fun redraw_widgets ()   = ( SourceBrowser.SDW.redraw ();
+                              FilelistFrame.SDW.redraw ();
+                              ErrorBox.SDW.redraw () )
   fun unregister_widgets () = ( SourceBrowser.SDW.unregister ();
-                                FilelistFrame.SDW.unregister () )
+                                FilelistFrame.SDW.unregister ();
+                                ErrorBox.SDW.unregister () )
 
   fun init ()        = ( register_widgets (); initMainWorkbenchWindow () )
   fun postprocess () = ( redraw_widgets () )

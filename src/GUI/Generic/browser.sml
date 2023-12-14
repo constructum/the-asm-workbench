@@ -3,7 +3,7 @@ struct
 (*  open GUI_LIB*)
   open TkTypes SmlTk
   open GUI_Misc
-  val debug = debug true "Browser"
+  val debug = debug false "Browser"
 		
   exception Browser
   type BROWSER =

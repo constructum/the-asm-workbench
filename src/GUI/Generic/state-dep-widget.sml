@@ -40,25 +40,26 @@ struct
 
   datatype SDW' =
      StateDepWidget of
-       { widId   : SmlTk.WidId,
-	 redraw  : (SmlTk.WidId -> unit) ref,
-	 dependencies : GUI_StateElem.GSE list,
-         SDW_map : (SDW' ref) MAP }
+        { widId   : SmlTk.WidId,
+	        redraw  : (SmlTk.WidId -> unit) ref,
+	        dependencies : GUI_StateElem.GSE list,
+          SDW_map : (SDW' ref) MAP }
 
   type SDW = SDW' ref
   type SDW_MAP = SDW MAP
 
-  val sdw_map = ref (SDW_Map.empty :SDW SDW_Map.map)
+  val sdw_map  = ref (SDW_Map.empty :SDW SDW_Map.map)
 
   fun register_widget (widId :SmlTk.WidId, redraw_fct :SmlTk.WidId -> unit, dependencies) =
     let val _ = debug "register_widget ('$1', ..., [$2])"
 			[ SmlTk.mkWidgetString widId,
 			  List_.output ", " (map GUI_StateElem.get_name dependencies) ]
-	val sdw :SDW = ref ( StateDepWidget { widId = widId, redraw = ref redraw_fct,
+	      val sdw :SDW = ref ( StateDepWidget { widId = widId, redraw = ref redraw_fct,
 					      dependencies = dependencies,
 					      SDW_map = sdw_map } )
     in sdw_map := SDW_Map.insert (!sdw_map, widId, sdw);
-       debug "sdw_map: $1" [ List_.output ", " (map SmlTk.mkWidgetString (SDW_Map.listKeys (!sdw_map))) ]    end
+       debug "sdw_map: $1" [ List_.output ", " (map SmlTk.mkWidgetString (SDW_Map.listKeys (!sdw_map))) ]
+    end
 
   fun unregister_widget (widId :SmlTk.WidId) =
   ( debug "unregister_widget ('$1')" [ SmlTk.mkWidgetString widId ];
@@ -74,7 +75,7 @@ struct
   fun sdw_to_string (ref (StateDepWidget { widId, redraw, dependencies, ... })) =
       String_.replace "StateDepWidget { widId = '$1', redraw = <fct>, dependencies = [ $2 ] }"
 		      [ SmlTk.mkWidgetString widId,
-			List_.output ", " (map GUI_StateElem.gse_to_string dependencies) ]
+			      List_.output ", " (map GUI_StateElem.gse_to_string dependencies) ]
 
   fun full_gui_update () =
     let val _ = debug "full_gui_update " []
@@ -95,9 +96,9 @@ struct
     let fun register_fun () =
         ( register_widget (SmlTk.selWidgetId widget, redraw_widget, dependencies); () )
         fun redraw_fun () =
-	  redraw_widget (SmlTk.selWidgetId widget)
-	fun unregister_fun () =
-	  unregister_widget (SmlTk.selWidgetId widget)
+	        redraw_widget (SmlTk.selWidgetId widget)
+	      fun unregister_fun () =
+	        unregister_widget (SmlTk.selWidgetId widget)
     in (register_fun, redraw_fun, unregister_fun)  
     end
 end

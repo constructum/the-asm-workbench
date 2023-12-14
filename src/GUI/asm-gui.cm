@@ -2,11 +2,11 @@ Group is
 	$/basis.cm
 	$/smlnj-lib.cm
 	
-        ../../sml_tk/src/smltk.cm
-        ../../sml_tk/src/toolkit/sources.cm 
+    ../../sml_tk/src/smltk.cm
+	../../sml_tk/src/toolkit/sources.cm 
 
 	../../lib/SML/lib.cm
-        ../Kernel/asm.cm
+	../Kernel/asm.cm
 
 	Generic/gui-misc.sml
 	Generic/asm-gui-fonts.sml
@@ -30,19 +30,19 @@ Group is
 	Widgets/filelist-frame.sml
 
 	Windows/error-box.sml
-        Windows/signature.sml
-        Windows/observation-window.sml
-        Windows/term-observation.sml
-        Windows/run-options.sml
-        Windows/visual-options.sml
-        Windows/visualization.sml
+	Windows/signature.sml
+	Windows/observation-window.sml
+	Windows/term-observation.sml
+	Windows/run-options.sml
+	Windows/visual-options.sml
+	Windows/visualization.sml
 	Windows/about-window.sml
 	Windows/license-window.sml
 
 	asm-interface.sml
 	asm-gui-session.sml
 	asm-gui-actions.sml
-        asm-gui-menus.sml
-        asm-gui.sml
+	asm-gui-menus.sml
+	asm-gui.sml
 	asm-cl.sml
 	asm-wb.sml
