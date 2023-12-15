@@ -100,11 +100,11 @@ struct
       val dependencies = [ ASM_GUI_Actions.gse_asm_state,
                            Filelist.gse_filelist, TermObservation.gse_termlist ]
       fun redraw (_, textwid_id, term_cell) =
-        TextWid.redraw textwid_id
+      ( TextWid.redraw textwid_id
                        ( Listbox.Widget.display (
 	                   ParsedTerm.argument term_cell,
 	                   (show_term_value (ParsedTerm.value term_cell))
-                           handle _ => ""  (* !!! ERROR MESSAGE ? *) ) )
+                           handle _ => ""  (* !!! ERROR MESSAGE ? *) ) ) )
       fun register (elem as (_, textwid_id, _)) =
       ( StateDepWidget.register_widget (textwid_id, fn _ => redraw elem, dependencies); () )
       fun unregister (_, textwid_id, _) = StateDepWidget.unregister_widget textwid_id
@@ -113,8 +113,16 @@ struct
     fun get_win_id (win_id, _, _) = win_id
 
     fun contents (elem as (_, textwid_id, term)) =
-	[ TextWidget.widget elem,
-          RightButton ("Close", fn _ => (!closeWindowRef) elem) ]
+	  [ TextWidget.widget elem,
+      Frame ( newWidgetId (),
+        [ RightButton ("Close", fn _ => (!closeWindowRef) elem),
+          RightButton ("Print value", fn _ => print ((show_term_value (ParsedTerm.value term)) ^ "\n")),
+          RightButton ("Print term", fn _ => print ((ParsedTerm.argument term) ^ "\n"))  ],
+        [Fill X], [Relief Ridge, Borderwidth 2], [] ) ]
+
+(*Frame ( newWidgetId (),
+    [insertNewTerm (), clearTerm enterTermText_widId, quitButton enterTerm_winId ],
+    [Fill X], [Relief Ridge, Borderwidth 2], [] ) *)
 
     fun init elem = TextWidget.register elem
     fun postprocess elem = TextWidget.redraw elem
