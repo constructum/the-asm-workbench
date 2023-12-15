@@ -93,12 +93,14 @@ struct
     ( debug "loadNewFiles [ $1 ]" [ List_.output ", " newFilenames ];
       resetFilelist newFilenames;
       loadFiles ();
+      RunOptions.eval_program ();
       full_gui_update () )
 
     fun reloadOldFiles () =
     ( debug0 "reloadOldFiles ()";
       resetFilelist (getFilenames ());
       loadFiles ();
+      RunOptions.eval_program ();
       full_gui_update ())
       
     fun addFile newFilename =
