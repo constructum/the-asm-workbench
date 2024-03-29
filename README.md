@@ -20,7 +20,7 @@ Implemented tools based on said infrastructure include:
 
 * an interface to the SMV model checker.
 
-More information about the ASM Workbench can be found in my [thesis](https://github.com/constructum/the-asm-workbench/blob/main/doc/2000%20Del%20Castillo%20-%20The%20ASM%20Workbench.pdf).
+More information about the ASM Workbench can be found in my [thesis](https://github.com/constructum/the-asm-workbench/blob/main/doc/2000-Del-Castillo-The-ASM-Workbench.pdf).
 
 Some documentation on how to use the ASM Workbench is in preparation.
 
